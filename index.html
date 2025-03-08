@@ -31,6 +31,7 @@
           <li class="nav-item"><a class="nav-link" href="mindmap.html">Mind Map</a></li>
           <li class="nav-item"><a class="nav-link" href="courses.html">Courses</a></li>
           <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+          <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
           <li class="nav-item">
             <button class="btn btn-outline-light" id="darkModeToggle">Toggle Dark Mode</button>
           </li>
@@ -55,14 +56,23 @@
   </header>
   
   <!-- Ask Doubt Section -->
-  <section id="ai-doubt-solver" class="py-5">
-    <div class="container">
-      <h2 class="text-center mb-4">Ask Your Doubt</h2>
-      <div class="mb-3">
-        <textarea id="doubtInput" class="form-control" placeholder="Enter your question here..."></textarea>
-        <button id="askBtn" class="btn btn-primary mt-2">Ask AI</button>
-      </div>
-      <div id="doubtResponse" class="alert alert-info mt-3"></div>
+<section id="ai-doubt-solver" class="py-5">
+  <div class="container">
+    <h2 class="text-center mb-4">Ask Your Doubt</h2>
+    <div class="mb-3">
+      <textarea id="doubtInput" class="form-control" placeholder="Enter your question here..."></textarea>
+      <button id="askBtn" class="btn btn-primary mt-2">Ask AI</button>
+    </div>
+    <div id="doubtResponse" class="alert alert-info mt-3"></div>
+  </div>
+</section> 
+  
+  <!-- Quiz Preview Section -->
+  <section id="quiz-preview" class="py-5 bg-light">
+    <div class="container text-center">
+      <h2>Test Your Knowledge</h2>
+      <p>Ready for a challenge? Take our quiz to see how much you've learned!</p>
+      <a href="quiz.html" class="btn btn-primary">Take the Quiz</a>
     </div>
   </section>
 

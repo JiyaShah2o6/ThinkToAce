@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz - ThinkToAce</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom CSS (Global theme: Dark Academia, etc.) -->
+  <link rel="stylesheet" href="styles.css">
+  <!-- Newspaper-Style Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=EB+Garamond:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Three.js Library (for background) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <style>
+    /* Additional inline styles specific to the quiz page */
+    .quiz-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .quiz-question {
+      margin-bottom: 15px;
+    }
+    .quiz-option {
+      margin-left: 20px;
+    }
+    #quiz-results {
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body class="light-mode">
+  <!-- 3D Background Canvas -->
+  <canvas id="bgAnimation"></canvas>
+  
+  <!-- Navbar (using your global theme) -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">ThinkToAce</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+         <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+         <ul class="navbar-nav ms-auto">
+           <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+           <li class="nav-item"><a class="nav-link" href="modules.html">Modules</a></li>
+           <li class="nav-item"><a class="nav-link" href="features.html">Features</a></li>
+           <li class="nav-item"><a class="nav-link" href="mindmap.html">Mind Map</a></li>
+           <li class="nav-item"><a class="nav-link" href="courses.html">Courses</a></li>
+           <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+           <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+           <li class="nav-item">
+             <button class="btn btn-outline-light" id="darkModeToggle">Toggle Dark Mode</button>
+           </li>
+         </ul>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- Quiz Page Content -->
+  <section id="quiz-page" class="py-5">
+    <div class="container quiz-container">
+      <h1 class="text-center mb-4">Quiz Challenge</h1>
+      <form id="quiz-form">
+        <div id="quiz-questions">
+          <!-- Quiz questions will be injected here by JavaScript -->
+        </div>
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary">Submit Quiz</button>
+        </div>
+      </form>
+      <div id="quiz-results" class="text-center"></div>
+    </div>
+  </section>
+  
+  <!-- Footer (same as global theme) -->
+  <footer class="bg-dark text-white py-4">
+    <div class="container text-center">
+      <p>&copy; 2025 ThinkToAce. All rights reserved.</p>
+    </div>
+  </footer>
+  
+  <!-- Quiz Script -->
+  <script>
+    // Array of quiz questions (each question corresponds to a module topic)
+    const quizQuestions = [
+      {
+        topic: "Data Structures",
+        question: "Which data structure follows the First-In-First-Out (FIFO) principle?",
+        options: ["Stack", "Queue", "Tree", "Graph"],
+        correct: 1  // Queue
+      },
+      {
+        topic: "Data Structures",
+        question: "What is the time complexity of accessing an element in an array by index?",
+        options: ["O(1)", "O(n)", "O(log n)", "O(n log n)"],
+        correct: 0  // O(1)
+      },
+      {
+        topic: "Machine Learning",
+        question: "Which algorithm is most commonly used for classification tasks?",
+        options: ["Linear Regression", "K-Nearest Neighbors", "K-Means Clustering", "Apriori Algorithm"],
+        correct: 1  // K-Nearest Neighbors
+      },
+      {
+        topic: "Machine Learning",
+        question: "Which of the following is a supervised learning algorithm?",
+        options: ["Principal Component Analysis", "Autoencoder", "Decision Tree", "K-Means"],
+        correct: 2  // Decision Tree
+      },
+      {
+        topic: "Web Development",
+        question: "Which language is used primarily for styling web pages?",
+        options: ["HTML", "CSS", "JavaScript", "Python"],
+        correct: 1  // CSS
+      },
+      {
+        topic: "Web Development",
+        question: "Which technology is essential for building interactive web interfaces?",
+        options: ["HTTP", "SQL", "JavaScript", "XML"],
+        correct: 2  // JavaScript
+      }
+    ];
+    
+    // Function to display quiz questions
+    function loadQuiz() {
+      const quizContainer = document.getElementById("quiz-questions");
+      quizQuestions.forEach((q, index) => {
+        const questionDiv = document.createElement("div");
+        questionDiv.classList.add("mb-4", "quiz-question");
+        // Display the question along with its topic
+        questionDiv.innerHTML = `<h5>Q${index + 1}. [${q.topic}] ${q.question}</h5>`;
+        
+        // Create radio button options
+        q.options.forEach((option, i) => {
+          const optionLabel = document.createElement("label");
+          optionLabel.classList.add("d-block", "quiz-option");
+          optionLabel.innerHTML = `
+            <input type="radio" name="question${index}" value="${i}" /> ${option}
+          `;
+          questionDiv.appendChild(optionLabel);
+        });
+        
+        quizContainer.appendChild(questionDiv);
+      });
+    }
+    
+    // Function to calculate and display quiz result
+    function calculateResult(event) {
+      event.preventDefault();
+      let score = 0;
+      quizQuestions.forEach((q, index) => {
+        const selected = document.querySelector(`input[name="question${index}"]:checked`);
+        if (selected && parseInt(selected.value) === q.correct) {
+          score++;
+        }
+      });
+      const total = quizQuestions.length;
+      const percentage = ((score / total) * 100).toFixed(2);
+      const resultDiv = document.getElementById("quiz-results");
+      resultDiv.innerHTML = `<p>You scored ${score} out of ${total} (${percentage}%).</p>`;
+    }
+    
+    // Attach event listener to quiz form submit
+    document.getElementById("quiz-form").addEventListener("submit", calculateResult);
+    
+    loadQuiz();
+  </script>
+  
+  <!-- Global Script (for dark mode, 3D background, YouTube API, etc.) -->
+  <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
