@@ -137,33 +137,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const doubtInput = document.getElementById("doubtInput");
   const doubtResponse = document.getElementById("doubtResponse");
 
-  if (askBtn && doubtInput && doubtResponse) {
-    askBtn.addEventListener("click", async function () {
-      const doubt = doubtInput.value.trim();
-      if (!doubt) {
-        doubtResponse.innerText = "⚠ Please enter a question first!";
-        return;
-      }
-      doubtResponse.innerText = "⏳ Thinking...";
-
-      try {
-        const response = await fetch("/api/ask", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ question: doubt }),
-        });
-        const data = await response.json();
-        if (data.answer) {
-          doubtResponse.innerText = `🤖 AI: ${data.answer}`;
-        } else {
-          doubtResponse.innerText = "⚠ Error fetching response.";
-        }
-      } catch (error) {
-        doubtResponse.innerText = "⚠ Server error. Please try again later.";
-        console.error("Error:", error);
-      }
-    });
-  }
 
   // ============================
   // Login Page Dynamic Settings

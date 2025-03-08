@@ -196,3 +196,26 @@ body {
   line-height: 1.25;
   color: #f7f2ab;
 }
+
+/* Dark mode overrides for ChatGPT Search and Quiz Preview */
+.dark-mode #chatgpt-search.bg-light,
+.dark-mode #quiz-preview.bg-light {
+  background-color: #2b2b2b !important; /* A darker background */
+  color: #e0c097; /* Matches your dark mode text color */
+}
+
+/* Input fields and text in these sections */
+.dark-mode #chatgpt-search input,
+.dark-mode #quiz-preview input {
+  background-color: #3b3b3b;
+  border-color: #e5c07b;
+  color: #e0c097;
+}
+
+/* Buttons in these sections */
+.dark-mode #chatgpt-search .btn,
+.dark-mode #quiz-preview .btn {
+  background-color: #ff9500; /* Same orange you use elsewhere */
+  border-color: #ff9500;
+  color: #fff;
+}
